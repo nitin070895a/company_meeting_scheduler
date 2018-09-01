@@ -29,6 +29,7 @@ import java.util.Date;
  */
 public class ScheduleMeeting extends AppCompatActivity implements View.OnClickListener {
 
+    // keys for intent data that should be passed to this activity
     public static final String INTENT_DATA_DATE = "date";
     public static final String INTENT_DATA_START_TIMES = "start_times";
     public static final String INTENT_DATA_END_TIMES = "end_times";
@@ -38,20 +39,21 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
      */
     private Calendar currentDate;
 
+    /**
+     * Input fields for startTime, endTime and description
+     */
     private EditText startTime, endTime, desc;
 
     // all the start and end times of the {@code currentDate}
     private ArrayList<String> startTimes = new ArrayList<>();
     private ArrayList<String> endTimes = new ArrayList<>();
 
-    // will be sued to show messages
-    private Snackbar snackbar;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_meeting);
 
+        // find the views
         Toolbar toolbar = findViewById(R.id.toolbar);
         EditText date = findViewById(R.id.date);
 
@@ -60,16 +62,19 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
         desc = findViewById(R.id.description);
         Button submit = findViewById(R.id.submit);
 
+        // set listeners
         submit.setOnClickListener(this);
         startTime.setOnClickListener(this);
         endTime.setOnClickListener(this);
 
+        // fetch data received from the intent
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
 
             // set the passed date to the date field
             date.setText(bundle.getString(INTENT_DATA_DATE));
 
+            // make calendar instance of the received date
             currentDate = TimeAndDateUtils.stringDateToCalendar(bundle.getString(INTENT_DATA_DATE), TimeAndDateUtils.DEFAULT_DATE_FORMAT);
 
             ArrayList<String> startTimes = bundle.getStringArrayList(INTENT_DATA_START_TIMES);
@@ -81,6 +86,7 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
 
         }
 
+        // setup toolbar
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -96,6 +102,7 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
 
             case android.R.id.home:
 
+                // back button pressed from toolbar
                 onBackPressed();
 
                 break;
@@ -140,6 +147,7 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
                 || desc.getText().toString().equals("")) {
 
             showSnackBar(getString(R.string.please_fill_the_form), Snackbar.LENGTH_SHORT);
+
             return;
         }
 
@@ -166,11 +174,11 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
                 Date sDate = sCal.getTime();
                 Date eDate = eCal.getTime();
 
-                Log.e("Hurray", "Sel start time " + selectedStartTime.toString());
-                Log.e("Hurray", "Sel end time " + selectedEndTime.toString());
+                Log.e("Time", "Sel start time " + selectedStartTime.toString());
+                Log.e("Time", "Sel end time " + selectedEndTime.toString());
 
-                Log.e("Hurray", "Meeting start time " + sDate.toString());
-                Log.e("Hurray", "Meeting end time " + eDate.toString());
+                Log.e("Time", "Meeting start time " + sDate.toString());
+                Log.e("Time", "Meeting end time " + eDate.toString());
 
                 // check if the start time or end time of the desired meeting is
                 // in between the start and end time of any other meeting
@@ -199,7 +207,7 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
      */
     public void showSnackBar(String message, int duration){
 
-        snackbar = Snackbar.make(findViewById(android.R.id.content), message, duration);
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, duration);
 
         View sbView = snackbar.getView();
         TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);

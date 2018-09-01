@@ -94,6 +94,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         next = findViewById(R.id.next);
         scheduleButton = findViewById(R.id.schedule);
 
+        // set click listeners
         prev.setOnClickListener(this);
         next.setOnClickListener(this);
         scheduleButton.setOnClickListener(this);
@@ -127,8 +128,10 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         prev.setEnabled(true);
         next.setEnabled(true);
 
+        // disable the schedule button for past date
         scheduleButton.setEnabled(currentDate.compareTo(today) >= 0);
 
+        // check if api was successful and some meetings were received from the API
         if(success && meetings.size() > 0) {
 
             recyclerView.setVisibility(View.VISIBLE);
@@ -136,6 +139,8 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         }
         else{
             nonAvailabilityHolder.setMessage(message);
+
+            // api was successful but no meetings were scheduled for that day
             if(success && meetings.size() < 1)
                 nonAvailabilityHolder.setMessage(getString(R.string.no_meetings));
 
@@ -148,12 +153,14 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
     public void parseResult(JSONArray result, String callingUrl) {
         // do parsing here
 
+        // parse the result into meetings ArrayList using gson
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         meetings = new ArrayList<>(Arrays.asList(gson.fromJson(String.valueOf(result), Meeting[].class)));
 
         final SimpleDateFormat format = new SimpleDateFormat(TimeAndDateUtils.DEFAULT_TIME_FORMAT, Locale.ENGLISH);
 
+        // sort the list of meeting in ascending order of their start dates
         Collections.sort(meetings, new Comparator<Meeting>() {
             @Override
             public int compare(Meeting o1, Meeting o2) {
@@ -188,7 +195,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         titleDate.setText(TimeAndDateUtils.convertStringDate(strDate,
                 TimeAndDateUtils.DEFAULT_DATE_FORMAT, "dd-MM-yyyy"));
 
-        // show loading view
+        // show loading view and disable all the other views
         recyclerView.setVisibility(View.GONE);
         nonAvailabilityHolder.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
@@ -216,14 +223,16 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
 
             case R.id.next:
 
-                currentDate = TimeAndDateUtils.addDaysToADate(currentDate, 1, TimeAndDateUtils.DEFAULT_DATE_FORMAT);
+                // fetch meetings for the next day
+                currentDate = TimeAndDateUtils.addDaysToADate(currentDate, 1);
                 fetchMeetings(currentDate);
 
                 break;
 
             case R.id.prev:
 
-                currentDate = TimeAndDateUtils.addDaysToADate(currentDate, -1, TimeAndDateUtils.DEFAULT_DATE_FORMAT);
+                // fetch meetings for the previous day
+                currentDate = TimeAndDateUtils.addDaysToADate(currentDate, -1);
                 fetchMeetings(currentDate);
 
                 break;
@@ -238,13 +247,14 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
                 ArrayList<String> startTimes = new ArrayList<>();
                 ArrayList<String> endTimes = new ArrayList<>();
 
-                // find the lists of all the start times and end times of the current list
+                // find the lists of all the start times and end times of the current list of meetings
                 for(Meeting meeting : meetings) {
 
                     startTimes.add(meeting.getStartTime());
                     endTimes.add(meeting.getEndTime());
                 }
 
+                // send end times and start times to the schedule activity
                 intent.putExtra(ScheduleMeeting.INTENT_DATA_START_TIMES, startTimes);
                 intent.putExtra(ScheduleMeeting.INTENT_DATA_END_TIMES, endTimes);
 

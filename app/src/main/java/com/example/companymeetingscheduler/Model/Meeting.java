@@ -1,8 +1,5 @@
 package com.example.companymeetingscheduler.Model;
 
-import android.util.Log;
-
-import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.google.gson.annotations.SerializedName;
 
 /**

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.example.companymeetingscheduler.R;
 
 /**
- * Created by Nitin Khurana on 1/9/2018.
  * <p>
  * A view class to show a screen to handle non availability scenarios.
  * With that I mean for example when we did not get any response from our servers,
@@ -30,6 +29,8 @@ import com.example.companymeetingscheduler.R;
  * <p>
  * <strong>Best practices :</strong> If you plan for a retry option make sure you hide the holder after pressing the button_theme_selector,
  * and after getting the response you can show it again based on your results
+ *
+ * Created by Nitin on 01/09/18.
  */
 public class NonAvailabilityHolder {
 

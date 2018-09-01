@@ -78,7 +78,7 @@ public class TimeAndDateUtils {
      *
      * @return the result date with {@code days} added to the {@code date}
      */
-    public static Date addDaysToADate(Date date, int days, String format){
+    public static Date addDaysToADate(Date date, int days){
 
         Calendar c = Calendar.getInstance();
         c.setTime(date);
