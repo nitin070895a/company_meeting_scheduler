@@ -1,7 +1,9 @@
 package com.example.companymeetingscheduler.Helper;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -12,6 +14,10 @@ import com.example.companymeetingscheduler.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Contains the API calling mechanism using {@link com.android.volley.toolbox.Volley}
@@ -56,24 +62,44 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
      * @param context the context of the caller
      * @param method either of {@link com.android.volley.Request.Method#GET} or {@link com.android.volley.Request.Method#POST}
      * @param URL the url that you want to hit
+     * @param params the parameters to be sent via the {@code URL} api
      * @param apiCallListener the class that will be listening to the api call events
+     *
      */
-    public VolleyTask(Context context, int method, String URL, ApiCallListener apiCallListener) {
+    public VolleyTask(Context context, int method, String URL, HashMap<String, Object> params,
+                      ApiCallListener apiCallListener) {
 
         this.context = context;
         this.URL = URL;
         this.apiCallListener = apiCallListener;
 
+        if (method == Request.Method.GET) {
+
+            if(params != null) {
+
+                Iterator it = params.entrySet().iterator();
+                while (it.hasNext()) {
+
+                    Map.Entry pair = (Map.Entry)it.next();
+                    this.URL += pair.getKey() + "=" + pair.getValue() + "&";
+
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
+            }
+        }
+
         // TODO: 01/09/18 Add stuff related to post methods
 
+        Log.i(this.getClass().getSimpleName(), "Api call to " + this.URL);
+
         // create a request with the {@code url} using the {@code method} specified
-        jsonObjectRequest = new JsonObjectRequest(method, URL, null, this, this);
+        jsonObjectRequest = new JsonObjectRequest(method, this.URL, null, this, this);
 
     }
 
     /**
      * Executes the API call based on the params passed inside the constructor
-     * {@link VolleyTask#VolleyTask(Context, int, String, ApiCallListener)}
+     * {@link VolleyTask#VolleyTask(Context, int, String, HashMap, ApiCallListener)}
      */
     public void execute() {
 
@@ -90,6 +116,8 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
 
         // give the callbacks to the listener listening to the events
         apiCallListener.onApiResult(success, message, URL);
+
+        error.printStackTrace();
     }
 
     @Override
@@ -101,6 +129,8 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
             JSONArray result = apiResponse.getJSONArray("");
 
             success = true;
+            message = context.getString(R.string.success);
+            Log.d(this.getClass().getSimpleName(), "Response from api " + this.URL + " is: " + apiResponse);
 
             // callback to the listener to do the parsing
             apiCallListener.parseResult(result, URL);

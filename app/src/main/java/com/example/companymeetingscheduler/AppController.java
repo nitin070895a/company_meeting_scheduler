@@ -19,6 +19,9 @@ public class AppController extends Application {
      */
     private static AppController instance;
 
+    public static final String API_SCHEDULE = "http://fathomless-shelf-5846.herokuapp.com/api/schedule?";
+    public static final String API_SCHEDULE_PARAM_DATE = "date";
+
     /**
      * RequestQueue i.e queue of API calls of {@link Volley}
      */
@@ -79,4 +82,5 @@ public class AppController extends Application {
         if(requestQueue != null)
             requestQueue.cancelAll(tag);
     }
+
 }
