@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -52,12 +54,17 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
     /**
      * The selected date
      */
-    private String currentDate;
+    private Date currentDate;
 
     /**
      * The title of the activity
      */
     private TextView titleDate;
+
+    /**
+     * Next and previous buttons
+     */
+    private LinearLayout next, prev;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +75,11 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressbar);
         titleDate = findViewById(R.id.title);
+        prev = findViewById(R.id.prev);
+        next = findViewById(R.id.next);
 
-        findViewById(R.id.prev).setOnClickListener(this);
-        findViewById(R.id.next).setOnClickListener(this);
+        prev.setOnClickListener(this);
+        next.setOnClickListener(this);
 
         // create a view to handle errors
         nonAvailabilityHolder = new NonAvailabilityHolder(this, findViewById(android.R.id.content));
@@ -85,8 +94,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         });
 
         // get the current date
-        currentDate = TimeAndDateUtils.getCurrentDateInDefaultFormat();
-        titleDate.setText(currentDate);
+        currentDate = TimeAndDateUtils.getCurrentDate();
 
         // fetch the contents of the current date
         fetchMeetings(currentDate);
@@ -98,6 +106,8 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
 
         // hide loading view and show the list of scheduled meetings
         progressBar.setVisibility(View.GONE);
+        prev.setEnabled(true);
+        next.setEnabled(true);
 
         if(success && meetings.size() > 0) {
 
@@ -118,8 +128,6 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
     public void parseResult(JSONArray result, String callingUrl) {
         // do parsing here
 
-        meetings.clear(); // clear old meetings
-
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         meetings = new ArrayList<>(Arrays.asList(gson.fromJson(String.valueOf(result), Meeting[].class)));
@@ -131,16 +139,25 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
      *
      * @param date the date in format 'dd/mm/yyyy' at which the scheduled meetings are desired
      */
-    private void fetchMeetings(String date) {
+    private void fetchMeetings(Date date) {
+        meetings.clear(); // clear old meetings
+
+        String strDate = TimeAndDateUtils.getDateInFormat(date, TimeAndDateUtils.DEFAULT_DATE_FORMAT);
+
+        // set the title of the activity to the current date
+        titleDate.setText(TimeAndDateUtils.convertStringDate(strDate,
+                TimeAndDateUtils.DEFAULT_DATE_FORMAT, "dd-MM-yyyy"));
 
         // show loading view
         recyclerView.setVisibility(View.GONE);
         nonAvailabilityHolder.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+        prev.setEnabled(false);
+        next.setEnabled(false);
 
         // make hash-map containing all the required params by the api
         HashMap<String, Object> params = new HashMap<>();
-        params.put(AppController.API_SCHEDULE_PARAM_DATE, date);
+        params.put(AppController.API_SCHEDULE_PARAM_DATE, strDate);
 
         // call the api using a .GET request
         new VolleyTask(this,
@@ -158,9 +175,15 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
 
             case R.id.next:
 
+                currentDate = TimeAndDateUtils.addDaysToADate(currentDate, 1, TimeAndDateUtils.DEFAULT_DATE_FORMAT);
+                fetchMeetings(currentDate);
+
                 break;
 
             case R.id.prev:
+
+                currentDate = TimeAndDateUtils.addDaysToADate(currentDate, -1, TimeAndDateUtils.DEFAULT_DATE_FORMAT);
+                fetchMeetings(currentDate);
 
                 break;
         }

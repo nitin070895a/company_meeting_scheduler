@@ -17,7 +17,7 @@ public class TimeAndDateUtils {
     /**
      * The default date format
      */
-    private static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
+    public static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
 
     public static final String DEFAULT_TIME_FORMAT = "hh:mm a";
 
@@ -69,5 +69,22 @@ public class TimeAndDateUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Add some days to the given date and returns the date in the {@code format}
+     * @param date the date in which the days are to be added
+     * @param days the number of days to be added, can be negative to subtract
+     *
+     * @return the result date with {@code days} added to the {@code date}
+     */
+    public static Date addDaysToADate(Date date, int days, String format){
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        c.add(Calendar.DATE, days);
+
+        return new Date(c.getTimeInMillis());
     }
 }

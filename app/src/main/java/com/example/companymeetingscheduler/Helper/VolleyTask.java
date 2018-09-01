@@ -12,8 +12,6 @@ import com.example.companymeetingscheduler.Interface.ApiCallListener;
 import com.example.companymeetingscheduler.R;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -137,8 +135,8 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
             // you can do any pre-parsing here, i.e common stuff related to the server,
             // i.e encryption-decryption, some common params received, i.e database query success,
             // common message from the server
-            JSONObject testPreProcessing = (JSONObject) apiResponse.get(0);
-            Log.d(this.getClass().getSimpleName(), "Test Data " + testPreProcessing.toString());
+//            JSONObject testPreProcessing = (JSONObject) apiResponse.get(0);
+//            Log.d(this.getClass().getSimpleName(), "Test Data " + testPreProcessing.toString());
 
             success = true;
             message = context.getString(R.string.success);
@@ -147,7 +145,7 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
             apiCallListener.parseResult(apiResponse, URL);
 
         }
-        catch (JSONException e) {
+        /*catch (JSONException e) {
 
             // will be cause from any-pre parsing
 
@@ -155,7 +153,7 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
             message = context.getString(R.string.there_was_a_problem);  // server/api error, i.e bad resposne from the API
 
             e.printStackTrace();
-        }
+        }*/
         catch (Exception e) {
 
             success = false;
