@@ -4,17 +4,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Top portion of the activity -->
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:theme="@style/AppTheme.AppBarOverlay" >
 
+        <!-- Custom toolbar -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="4dp">
 
+            <!-- Prev Button -->
             <LinearLayout
                 android:id="@+id/prev"
                 android:layout_width="wrap_content"
@@ -25,6 +28,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:layout_centerVertical="true">
 
+                <!-- Prev button image -->
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -32,6 +36,7 @@
                     android:contentDescription="@string/prev"
                     android:rotation="180"/>
 
+                <!-- Prev button name -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,6 +47,7 @@
 
             </LinearLayout>
 
+            <!-- Next Button-->
             <LinearLayout
                 android:id="@+id/next"
                 android:layout_width="wrap_content"
@@ -54,6 +60,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true">
 
+                <!-- Next button name-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,6 +69,7 @@
                     android:textAllCaps="true"
                     android:fontFamily="sans-serif-medium"/>
 
+                <!-- Next button image -->
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -70,6 +78,7 @@
 
             </LinearLayout>
 
+            <!-- Title -->
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -83,11 +92,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!-- Everything below appbar -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Schedule Button -->
         <Button
             android:id="@+id/schedule"
             android:layout_width="match_parent"
@@ -96,6 +107,7 @@
             android:textAllCaps="true"
             android:layout_alignParentBottom="true"/>
 
+        <!-- Meetings list -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
@@ -104,6 +116,7 @@
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             android:layout_height="match_parent"/>
 
+        <!-- The loading view -->
         <ProgressBar
             android:id="@+id/progressbar"
             android:layout_width="50dp"
