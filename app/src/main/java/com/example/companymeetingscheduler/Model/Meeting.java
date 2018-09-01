@@ -1,5 +1,8 @@
 package com.example.companymeetingscheduler.Model;
 
+import android.util.Log;
+
+import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -39,11 +42,11 @@ public class Meeting {
     }
 
     public String getEndTime() {
-        return endTime;
+        return TimeAndDateUtils.convertStringDate(endTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT);
     }
 
     public String getStartTime() {
-        return startTime;
+        return TimeAndDateUtils.convertStringDate(startTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT);
     }
 
     public String[] getParticipants() {

@@ -23,6 +23,11 @@ public class MeetingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private ArrayList<Meeting> meetings = new ArrayList<>();
 
+    /**
+     * Constructor
+     * @param context the context of the caller
+     * @param meetings meetings to be shown in the list
+     */
     public MeetingsAdapter(Context context, ArrayList<Meeting> meetings){
         this.context = context;
         this.meetings = new ArrayList<>(meetings);
@@ -49,6 +54,8 @@ public class MeetingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         for(String person : meeting.getParticipants()) {
             people += person + seperator;
         }
+
+        // remove the last comma
         if(people.endsWith(seperator)) {
             people = people.substring(0, people.lastIndexOf(seperator));
         }

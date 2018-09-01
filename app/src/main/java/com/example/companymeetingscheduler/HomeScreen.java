@@ -110,7 +110,6 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
             nonAvailabilityHolder.setVisibility(View.VISIBLE);
         }
 
-
     }
 
     @Override
