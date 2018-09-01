@@ -87,4 +87,26 @@ public class TimeAndDateUtils {
 
         return new Date(c.getTimeInMillis());
     }
+
+
+    /**
+     * Converts a date in string format into a calendar instance
+     * @param date the string date to be converted
+     * @return the calender correspoding to the {@code date} specified
+     */
+    public static Calendar stringDateToCalendar(String date) {
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATE_FORMAT, Locale.ENGLISH);
+
+        try {
+            cal.setTime(sdf.parse(date));
+            return cal;
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

@@ -1,15 +1,22 @@
 package com.example.companymeetingscheduler.Activity;
 
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
+import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.example.companymeetingscheduler.R;
+
+import java.util.Calendar;
 
 /**
  * Screen that lets the user to schedule a meeting
@@ -19,11 +26,12 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
 
     public static final String INTENT_DATA_DATE = "date";
 
-    private EditText date;
-    private EditText startTime;
-    private EditText endTime;
+    /**
+     * The current date of the schedule page
+     */
+    private Calendar currentDate;
 
-    private Button submit;
+    private EditText startTime, endTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,10 +39,11 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_schedule_meeting);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        date = findViewById(R.id.date);
+        EditText date = findViewById(R.id.date);
+
         startTime = findViewById(R.id.startTime);
         endTime = findViewById(R.id.endTime);
-        submit = findViewById(R.id.submit);
+        Button submit = findViewById(R.id.submit);
 
         submit.setOnClickListener(this);
         startTime.setOnClickListener(this);
@@ -43,21 +52,18 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
 
+            // set the passed date to the date field
             date.setText(bundle.getString(INTENT_DATA_DATE));
+
+            currentDate = TimeAndDateUtils.stringDateToCalendar(bundle.getString(INTENT_DATA_DATE));
         }
-
-        makeEditTextImutable(date);
-        makeEditTextImutable(startTime);
-        makeEditTextImutable(endTime);
-
-        date.setClickable(false);
-
 
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+
     }
 
     @Override
@@ -82,9 +88,13 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
 
             case R.id.startTime:
 
+                showTimePicker(R.id.startTime, getString(R.string.start_time));
+
                 break;
 
             case R.id.endTime:
+
+                showTimePicker(R.id.endTime, getString(R.string.end_time));
 
                 break;
 
@@ -95,13 +105,36 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Removes focus from edit text, but make it clickable
-     * @param editText the edit text to be made clickable but not editable
+     * Show a time picker on a field click, and sets the result in am/pm format
+     * to the {@code editText} field
+     *
+     * @param id id of the field click
+     * @param title the title to be set to the time picker
      */
-    private void makeEditTextImutable(EditText editText) {
+    private void showTimePicker(final int id, String title){
 
-        editText.setFocusable(false);
-        editText.setClickable(true);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                String selTime = selectedHour + ":" + selectedMinute;
+
+                Log.e("Hurray", "Tie " + selTime);
+                Log.e("Hurray", "Conv " + TimeAndDateUtils.convertStringDate(selTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
+                // am pm format
+                if(id == R.id.startTime)
+                    startTime.setText(TimeAndDateUtils.convertStringDate(selTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
+                else if(id == R.id.endTime)
+                    endTime.setText(TimeAndDateUtils.convertStringDate(selTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
+
+            }
+        }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
+
+        timePickerDialog.show();
+
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+
     }
-
 }
