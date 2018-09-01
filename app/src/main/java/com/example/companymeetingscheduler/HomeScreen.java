@@ -20,10 +20,15 @@ import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Home screen of the app contains the list of scheduled meetings
@@ -131,6 +136,26 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         meetings = new ArrayList<>(Arrays.asList(gson.fromJson(String.valueOf(result), Meeting[].class)));
+
+        final SimpleDateFormat format = new SimpleDateFormat(TimeAndDateUtils.DEFAULT_TIME_FORMAT, Locale.ENGLISH);
+
+        Collections.sort(meetings, new Comparator<Meeting>() {
+            @Override
+            public int compare(Meeting o1, Meeting o2) {
+
+                try {
+                    Date o1date = format.parse(o1.getStartTime());
+                    Date o2date = format.parse(o2.getStartTime());
+
+                    return o1date.compareTo(o2date);
+                }
+                catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return 0;
+            }
+        });
     }
 
     /**
