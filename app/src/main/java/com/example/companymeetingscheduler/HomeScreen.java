@@ -4,12 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.example.companymeetingscheduler.Adapter.MeetingsAdapter;
+import com.example.companymeetingscheduler.Helper.NonAvailabilityHolder;
 import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.example.companymeetingscheduler.Helper.VolleyTask;
 import com.example.companymeetingscheduler.Interface.ApiCallListener;
@@ -40,27 +40,54 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
     private ProgressBar progressBar;
 
     /**
+     * Error view
+     */
+    private NonAvailabilityHolder nonAvailabilityHolder;
+
+    /**
      * List of the selected date meetings
      */
     private ArrayList<Meeting> meetings = new ArrayList<>();
+
+    /**
+     * The selected date
+     */
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+        // find views
         Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressbar);
 
+        // setup the toolbar
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
+        // create a view to handle errors
+        nonAvailabilityHolder = new NonAvailabilityHolder(this, findViewById(android.R.id.content));
+        nonAvailabilityHolder.setButtonVisibility(View.VISIBLE);
+        nonAvailabilityHolder.setButton(getString(R.string.retry), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        fetchMeetings(TimeAndDateUtils.getCurrentDateInDefaultFormat());
+                // refresh the current page
+                fetchMeetings(currentDate);
+            }
+        });
+
+        // get the current date
+        currentDate = TimeAndDateUtils.getCurrentDateInDefaultFormat();
+
+        // fetch the contents of the current date
+        fetchMeetings(currentDate);
     }
 
     @Override
@@ -68,10 +95,22 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
         // update ui here
 
         // hide loading view and show the list of scheduled meetings
-        recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
 
-        recyclerView.setAdapter(new MeetingsAdapter(this, meetings));
+        if(success && meetings.size() > 0) {
+
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setAdapter(new MeetingsAdapter(this, meetings));
+        }
+        else{
+            nonAvailabilityHolder.setMessage(message);
+            if(success && meetings.size() < 1)
+                nonAvailabilityHolder.setMessage(getString(R.string.no_meetings));
+
+            nonAvailabilityHolder.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     @Override
@@ -95,6 +134,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
 
         // show loading view
         recyclerView.setVisibility(View.GONE);
+        nonAvailabilityHolder.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
         // make hash-map containing all the required params by the api
