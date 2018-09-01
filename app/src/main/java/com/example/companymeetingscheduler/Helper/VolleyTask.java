@@ -6,7 +6,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.companymeetingscheduler.AppController;
 import com.example.companymeetingscheduler.Interface.ApiCallListener;
 import com.example.companymeetingscheduler.R;
@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * Created by Nitin on 01/09/18.
  */
-public class VolleyTask implements Response.ErrorListener, Response.Listener<JSONObject> {
+public class VolleyTask implements Response.ErrorListener, Response.Listener<JSONArray> {
 
     /**
      * Context of the caller
@@ -45,7 +45,7 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
     /**
      * The request instance corresponding to the {@code URL} givev
      */
-    private JsonObjectRequest jsonObjectRequest;
+    private JsonArrayRequest jsonArrayRequest;
 
     /**
      * If the API was called and result was fetched successfully
@@ -93,7 +93,7 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
         Log.i(this.getClass().getSimpleName(), "Api call to " + this.URL);
 
         // create a request with the {@code url} using the {@code method} specified
-        jsonObjectRequest = new JsonObjectRequest(method, this.URL, null, this, this);
+        jsonArrayRequest = new JsonArrayRequest(method, this.URL, null, this, this);
 
     }
 
@@ -104,7 +104,7 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
     public void execute() {
 
         // add the request to the request queue, queued in {@link AppController}
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
     }
 
     @Override
@@ -121,22 +121,27 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
     }
 
     @Override
-    public final void onResponse(JSONObject apiResponse) {
+    public void onResponse(JSONArray apiResponse) {
         // received response from the api call
 
         try {
 
-            JSONArray result = apiResponse.getJSONArray("");
+            // you can do any pre-parsing here, i.e common stuff related to the server,
+            // i.e encryption-decryption, some common params received, i.e database query success,
+            // common message from the server
+            JSONObject testPreProcessing = (JSONObject) apiResponse.get(0);
+            Log.d(this.getClass().getSimpleName(), "Test Data " + testPreProcessing.toString());
 
             success = true;
             message = context.getString(R.string.success);
-            Log.d(this.getClass().getSimpleName(), "Response from api " + this.URL + " is: " + apiResponse);
 
             // callback to the listener to do the parsing
-            apiCallListener.parseResult(result, URL);
+            apiCallListener.parseResult(apiResponse, URL);
 
         }
         catch (JSONException e) {
+
+            // will be cause from any-pre parsing
 
             success = false;
             message = context.getString(R.string.there_was_a_problem);  // server/api error, i.e bad resposne from the API

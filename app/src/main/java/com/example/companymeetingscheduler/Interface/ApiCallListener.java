@@ -1,7 +1,6 @@
 package com.example.companymeetingscheduler.Interface;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * The listener invoked from {@link com.example.companymeetingscheduler.Helper.VolleyTask}
