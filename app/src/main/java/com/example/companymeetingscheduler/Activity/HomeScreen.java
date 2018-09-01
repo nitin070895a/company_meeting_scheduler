@@ -166,8 +166,8 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
             public int compare(Meeting o1, Meeting o2) {
 
                 try {
-                    Date o1date = format.parse(o1.getStartTime());
-                    Date o2date = format.parse(o2.getStartTime());
+                    Date o1date = format.parse(TimeAndDateUtils.convertStringDate(o1.getStartTime(), "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
+                    Date o2date = format.parse(TimeAndDateUtils.convertStringDate(o2.getStartTime(), "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
 
                     return o1date.compareTo(o2date);
                 }
