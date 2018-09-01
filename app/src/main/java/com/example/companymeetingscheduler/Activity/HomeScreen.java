@@ -230,6 +230,8 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
 
                 // take the user to the schedule a meeting page
                 Intent intent = new Intent(this, ScheduleMeeting.class);
+                intent.putExtra(ScheduleMeeting.INTENT_DATA_DATE,
+                        TimeAndDateUtils.getDateInFormat(currentDate, TimeAndDateUtils.DEFAULT_DATE_FORMAT));
                 startActivity(intent);
 
                 break;
