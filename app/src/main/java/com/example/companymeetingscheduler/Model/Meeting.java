@@ -12,14 +12,14 @@ public class Meeting {
      * The start time of the meeting in format
      * {@link com.example.companymeetingscheduler.Helper.TimeAndDateUtils#DEFAULT_TIME_FORMAT}
      */
-    @SerializedName("startTime")
+    @SerializedName("start_time")
     private String startTime;
 
     /**
      * The end time of the meeting in format
      * {@link com.example.companymeetingscheduler.Helper.TimeAndDateUtils#DEFAULT_TIME_FORMAT}
      */
-    @SerializedName("endTime")
+    @SerializedName("end_time")
     private String endTime;
 
     /**

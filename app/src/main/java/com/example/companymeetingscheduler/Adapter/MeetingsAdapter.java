@@ -45,9 +45,14 @@ public class MeetingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.endTime.setText(meeting.getEndTime());
 
         String people = "";
+        String seperator = ", ";
         for(String person : meeting.getParticipants()) {
-            people += person + ", ";
+            people += person + seperator;
         }
+        if(people.endsWith(seperator)) {
+            people = people.substring(0, people.lastIndexOf(seperator));
+        }
+
         holder.participants.setText(people);
     }
 
