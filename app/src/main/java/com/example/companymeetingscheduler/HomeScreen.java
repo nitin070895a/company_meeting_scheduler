@@ -3,7 +3,6 @@ package com.example.companymeetingscheduler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -11,9 +10,14 @@ import com.android.volley.Request;
 import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.example.companymeetingscheduler.Helper.VolleyTask;
 import com.example.companymeetingscheduler.Interface.ApiCallListener;
+import com.example.companymeetingscheduler.Model.Meeting;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -31,6 +35,11 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
      * The view that represents loading when the api call is being made
      */
     private ProgressBar progressBar;
+
+    /**
+     * List of the selected date meetings
+     */
+    private ArrayList<Meeting> meetings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,11 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
     public void parseResult(JSONArray result, String callingUrl) {
         // do parsing here
 
+        meetings.clear(); // clear old meetings
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        meetings = (ArrayList<Meeting>) Arrays.asList(gson.fromJson(String.valueOf(result), Meeting[].class));
     }
 
     /**
