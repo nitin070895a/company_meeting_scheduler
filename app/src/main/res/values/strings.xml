@@ -4,4 +4,7 @@
     <string name="success">Success</string>
     <string name="could_not_connect">Could not connect</string>
     <string name="there_was_a_problem">There was a problem</string>
+    <string name="sample_time">00:00AM</string>
+    <string name="dash">-</string>
+
 </resources>
