@@ -3,9 +3,9 @@ package com.example.companymeetingscheduler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.example.companymeetingscheduler.Adapter.MeetingsAdapter;
@@ -27,7 +27,7 @@ import java.util.HashMap;
  * Home screen of the app contains the list of scheduled meetings
  * Created by Nitin on 01/09/18.
  */
-public class HomeScreen extends AppCompatActivity implements ApiCallListener {
+public class HomeScreen extends AppCompatActivity implements ApiCallListener, View.OnClickListener {
 
     /**
      * The view where list of the scheduled meetings will be shown
@@ -54,22 +54,23 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
      */
     private String currentDate;
 
+    /**
+     * The title of the activity
+     */
+    private TextView titleDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
         // find views
-        Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressbar);
+        titleDate = findViewById(R.id.title);
 
-        // setup the toolbar
-        setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+        findViewById(R.id.prev).setOnClickListener(this);
+        findViewById(R.id.next).setOnClickListener(this);
 
         // create a view to handle errors
         nonAvailabilityHolder = new NonAvailabilityHolder(this, findViewById(android.R.id.content));
@@ -85,6 +86,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
 
         // get the current date
         currentDate = TimeAndDateUtils.getCurrentDateInDefaultFormat();
+        titleDate.setText(currentDate);
 
         // fetch the contents of the current date
         fetchMeetings(currentDate);
@@ -149,4 +151,18 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.next:
+
+                break;
+
+            case R.id.prev:
+
+                break;
+        }
+    }
 }
