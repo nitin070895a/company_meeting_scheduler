@@ -17,6 +17,8 @@ public class TimeAndDateUtils {
      */
     private static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
 
+    private static final String DEFAULT_TIME_FORMAT = "hh:mma";
+
     /**
      * Returns the string of current date in the {@link TimeAndDateUtils#DEFAULT_DATE_FORMAT}
      * @return the current date in format {@link TimeAndDateUtils#DEFAULT_DATE_FORMAT}

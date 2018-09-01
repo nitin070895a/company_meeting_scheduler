@@ -3,6 +3,7 @@ package com.example.companymeetingscheduler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -27,6 +28,11 @@ import java.util.HashMap;
 public class HomeScreen extends AppCompatActivity implements ApiCallListener {
 
     /**
+     * The toolbar of the homescreen
+     */
+    private Toolbar toolbar;
+
+    /**
      * The view where list of the scheduled meetings will be shown
      */
     private RecyclerView recyclerView;
@@ -46,8 +52,16 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+        toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressbar);
+
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+
 
         fetchMeetings(TimeAndDateUtils.getCurrentDateInDefaultFormat());
     }
