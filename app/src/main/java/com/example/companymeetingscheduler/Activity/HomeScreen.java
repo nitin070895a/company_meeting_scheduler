@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -235,6 +234,20 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
                 Intent intent = new Intent(this, ScheduleMeeting.class);
                 intent.putExtra(ScheduleMeeting.INTENT_DATA_DATE,
                         TimeAndDateUtils.getDateInFormat(currentDate, TimeAndDateUtils.DEFAULT_DATE_FORMAT));
+
+                ArrayList<String> startTimes = new ArrayList<>();
+                ArrayList<String> endTimes = new ArrayList<>();
+
+                // find the lists of all the start times and end times of the current list
+                for(Meeting meeting : meetings) {
+
+                    startTimes.add(meeting.getStartTime());
+                    endTimes.add(meeting.getEndTime());
+                }
+
+                intent.putExtra(ScheduleMeeting.INTENT_DATA_START_TIMES, startTimes);
+                intent.putExtra(ScheduleMeeting.INTENT_DATA_END_TIMES, endTimes);
+
                 startActivity(intent);
 
                 break;

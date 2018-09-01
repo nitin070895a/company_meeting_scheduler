@@ -22,4 +22,8 @@
     <string name="end_time">End time</string>
     <string name="desc">Description</string>
 
+    <string name="slot_av">Slot available</string>
+    <string name="slot_not_av">Slot not available</string>
+    <string name="please_fill_the_form">Please complete the form</string>
+
 </resources>

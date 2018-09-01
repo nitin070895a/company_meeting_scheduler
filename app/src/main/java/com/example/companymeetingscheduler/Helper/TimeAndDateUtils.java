@@ -92,12 +92,13 @@ public class TimeAndDateUtils {
     /**
      * Converts a date in string format into a calendar instance
      * @param date the string date to be converted
+     * @param format the format of the {@code } date
      * @return the calender correspoding to the {@code date} specified
      */
-    public static Calendar stringDateToCalendar(String date) {
+    public static Calendar stringDateToCalendar(String date, String format) {
 
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATE_FORMAT, Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
 
         try {
             cal.setTime(sdf.parse(date));
