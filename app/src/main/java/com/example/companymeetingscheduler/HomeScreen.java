@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -71,6 +72,11 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
      */
     private LinearLayout next, prev;
 
+    /**
+     * Button to schedule meeting
+     */
+    private Button scheduleButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +88,11 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         titleDate = findViewById(R.id.title);
         prev = findViewById(R.id.prev);
         next = findViewById(R.id.next);
+        scheduleButton = findViewById(R.id.schedule);
 
         prev.setOnClickListener(this);
         next.setOnClickListener(this);
+        scheduleButton.setOnClickListener(this);
 
         // create a view to handle errors
         nonAvailabilityHolder = new NonAvailabilityHolder(this, findViewById(android.R.id.content));
@@ -113,6 +121,8 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         progressBar.setVisibility(View.GONE);
         prev.setEnabled(true);
         next.setEnabled(true);
+
+        scheduleButton.setEnabled(currentDate.compareTo(TimeAndDateUtils.getCurrentDate()) >= 0);
 
         if(success && meetings.size() > 0) {
 
@@ -179,6 +189,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         progressBar.setVisibility(View.VISIBLE);
         prev.setEnabled(false);
         next.setEnabled(false);
+        scheduleButton.setEnabled(false);
 
         // make hash-map containing all the required params by the api
         HashMap<String, Object> params = new HashMap<>();
@@ -211,6 +222,12 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
                 fetchMeetings(currentDate);
 
                 break;
+
+            case R.id.schedule:
+
+
+                break;
         }
     }
+
 }

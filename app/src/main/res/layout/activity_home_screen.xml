@@ -88,10 +88,19 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <Button
+            android:id="@+id/schedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/schedule_company_meeting"
+            android:textAllCaps="true"
+            android:layout_alignParentBottom="true"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:visibility="gone"
+            android:layout_above="@id/schedule"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             android:layout_height="match_parent"/>
 
