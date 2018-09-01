@@ -42,11 +42,11 @@ public class Meeting {
     }
 
     public String getEndTime() {
-        return TimeAndDateUtils.convertStringDate(endTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT);
+        return endTime;
     }
 
     public String getStartTime() {
-        return TimeAndDateUtils.convertStringDate(startTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT);
+        return startTime;
     }
 
     public String[] getParticipants() {

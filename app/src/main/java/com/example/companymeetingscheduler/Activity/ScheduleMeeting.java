@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -165,11 +166,18 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
                 Date sDate = sCal.getTime();
                 Date eDate = eCal.getTime();
 
+                Log.e("Hurray", "Sel start time " + selectedStartTime.toString());
+                Log.e("Hurray", "Sel end time " + selectedEndTime.toString());
+
+                Log.e("Hurray", "Meeting start time " + sDate.toString());
+                Log.e("Hurray", "Meeting end time " + eDate.toString());
+
                 // check if the start time or end time of the desired meeting is
                 // in between the start and end time of any other meeting
                 if(
-                        (selectedStartTime.compareTo(sDate) >= 0 && selectedStartTime.compareTo(eDate) <= 0) ||
-                                (selectedEndTime.compareTo(sDate) >=0 && selectedEndTime.compareTo(eDate) <=0)
+                        (selectedStartTime.compareTo(sDate) >= 0 && selectedStartTime.compareTo(eDate) < 0) ||
+                                (selectedEndTime.compareTo(sDate) >0 && selectedEndTime.compareTo(eDate) <=0) ||
+                                (selectedStartTime.compareTo(sDate) <0 && selectedEndTime.compareTo(eDate) > 0 )
 
                         ) {
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.companymeetingscheduler.Activity.HomeScreen;
+import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.example.companymeetingscheduler.Holders.MeetingItemViewHolder;
 import com.example.companymeetingscheduler.Model.Meeting;
 import com.example.companymeetingscheduler.R;
@@ -47,8 +48,8 @@ public class MeetingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Meeting meeting = meetings.get(position);
 
         holder.description.setText(meeting.getDescription());
-        holder.startTime.setText(meeting.getStartTime());
-        holder.endTime.setText(meeting.getEndTime());
+        holder.startTime.setText(TimeAndDateUtils.convertStringDate(meeting.getStartTime(), "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
+        holder.endTime.setText(TimeAndDateUtils.convertStringDate(meeting.getEndTime(), "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
 
         String people = "";
         String seperator = ", ";
