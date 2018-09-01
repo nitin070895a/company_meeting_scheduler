@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.companymeetingscheduler.Activity.HomeScreen;
 import com.example.companymeetingscheduler.Holders.MeetingItemViewHolder;
 import com.example.companymeetingscheduler.Model.Meeting;
 import com.example.companymeetingscheduler.R;
@@ -13,7 +14,7 @@ import com.example.companymeetingscheduler.R;
 import java.util.ArrayList;
 
 /**
- * Adapter for {@link android.support.v7.widget.RecyclerView} at {@link com.example.companymeetingscheduler.HomeScreen}
+ * Adapter for {@link android.support.v7.widget.RecyclerView} at {@link HomeScreen}
  * that list all the meetings of the selected date
  *
  * Created by Nitin on 01/09/18.

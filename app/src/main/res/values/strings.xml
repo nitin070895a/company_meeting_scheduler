@@ -12,5 +12,6 @@
     <string name="next">Next</string>
     <string name="prev">Prev</string>
     <string name="schedule_company_meeting">Schedule Company Meeting</string>
+    <string name="schedule_a_meeting">SCHEDULE A MEETING</string>
 
 </resources>

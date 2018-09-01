@@ -1,5 +1,6 @@
-package com.example.companymeetingscheduler;
+package com.example.companymeetingscheduler.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +12,13 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.example.companymeetingscheduler.Adapter.MeetingsAdapter;
+import com.example.companymeetingscheduler.AppController;
 import com.example.companymeetingscheduler.Helper.NonAvailabilityHolder;
 import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.example.companymeetingscheduler.Helper.VolleyTask;
 import com.example.companymeetingscheduler.Interface.ApiCallListener;
 import com.example.companymeetingscheduler.Model.Meeting;
+import com.example.companymeetingscheduler.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -225,6 +228,9 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
 
             case R.id.schedule:
 
+                // take the user to the schedule a meeting page
+                Intent intent = new Intent(this, ScheduleMeeting.class);
+                startActivity(intent);
 
                 break;
         }
