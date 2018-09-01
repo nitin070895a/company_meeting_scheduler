@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -119,8 +118,6 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
 
                 String selTime = selectedHour + ":" + selectedMinute;
 
-                Log.e("Hurray", "Tie " + selTime);
-                Log.e("Hurray", "Conv " + TimeAndDateUtils.convertStringDate(selTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));
                 // am pm format
                 if(id == R.id.startTime)
                     startTime.setText(TimeAndDateUtils.convertStringDate(selTime, "HH:mm", TimeAndDateUtils.DEFAULT_TIME_FORMAT));

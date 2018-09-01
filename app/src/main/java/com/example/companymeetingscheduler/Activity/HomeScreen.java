@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -64,6 +65,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
      * The selected date
      */
     private Date currentDate;
+    private Date today;
 
     /**
      * The title of the activity
@@ -110,7 +112,8 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         });
 
         // get the current date
-        currentDate = TimeAndDateUtils.getCurrentDate();
+        today = TimeAndDateUtils.getCurrentDate();
+        currentDate = today;
 
         // fetch the contents of the current date
         fetchMeetings(currentDate);
@@ -125,7 +128,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener, Vi
         prev.setEnabled(true);
         next.setEnabled(true);
 
-        scheduleButton.setEnabled(currentDate.compareTo(TimeAndDateUtils.getCurrentDate()) >= 0);
+        scheduleButton.setEnabled(currentDate.compareTo(today) >= 0);
 
         if(success && meetings.size() > 0) {
 
