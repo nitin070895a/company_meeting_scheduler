@@ -1,9 +1,9 @@
 package com.example.companymeetingscheduler.Activity;
 
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -88,13 +88,13 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
 
             case R.id.startTime:
 
-                showTimePicker(R.id.startTime, getString(R.string.start_time));
+                showTimePicker(R.id.startTime);
 
                 break;
 
             case R.id.endTime:
 
-                showTimePicker(R.id.endTime, getString(R.string.end_time));
+                showTimePicker(R.id.endTime);
 
                 break;
 
@@ -109,9 +109,8 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
      * to the {@code editText} field
      *
      * @param id id of the field click
-     * @param title the title to be set to the time picker
      */
-    private void showTimePicker(final int id, String title){
+    private void showTimePicker(final int id){
 
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
@@ -133,8 +132,8 @@ public class ScheduleMeeting extends AppCompatActivity implements View.OnClickLi
 
         timePickerDialog.show();
 
-        timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-        timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.colorAccent));
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.colorAccent));
 
     }
 }
