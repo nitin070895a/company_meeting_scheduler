@@ -4,10 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.android.volley.Request;
+import com.example.companymeetingscheduler.Adapter.MeetingsAdapter;
 import com.example.companymeetingscheduler.Helper.TimeAndDateUtils;
 import com.example.companymeetingscheduler.Helper.VolleyTask;
 import com.example.companymeetingscheduler.Interface.ApiCallListener;
@@ -26,11 +28,6 @@ import java.util.HashMap;
  * Created by Nitin on 01/09/18.
  */
 public class HomeScreen extends AppCompatActivity implements ApiCallListener {
-
-    /**
-     * The toolbar of the homescreen
-     */
-    private Toolbar toolbar;
 
     /**
      * The view where list of the scheduled meetings will be shown
@@ -52,7 +49,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressbar);
 
@@ -73,6 +70,8 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
         // hide loading view and show the list of scheduled meetings
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+
+        recyclerView.setAdapter(new MeetingsAdapter(this, meetings));
     }
 
     @Override
@@ -83,7 +82,7 @@ public class HomeScreen extends AppCompatActivity implements ApiCallListener {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        meetings = (ArrayList<Meeting>) Arrays.asList(gson.fromJson(String.valueOf(result), Meeting[].class));
+        meetings = new ArrayList<>(Arrays.asList(gson.fromJson(String.valueOf(result), Meeting[].class)));
     }
 
     /**

@@ -103,8 +103,16 @@ public class VolleyTask implements Response.ErrorListener, Response.Listener<JSO
      */
     public void execute() {
 
-        // add the request to the request queue, queued in {@link AppController}
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+        // check if internet is available
+        if(NetworkHelper.isConnected(context)) {
+
+            // add the request to the request queue, queued in {@link AppController}
+            AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+        }
+        else{
+            onErrorResponse(new VolleyError());
+        }
+
     }
 
     @Override
